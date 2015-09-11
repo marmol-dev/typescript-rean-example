@@ -1,64 +1,48 @@
 'use strict';
-
-var r = require('rethinkdb'),
-    config = require('./config.js');
-
-module.exports.start = function () {
-
-    return r.connect({
-            host: config.db.host,
-            port: config.db.port,
-        })
-        //check the db exists
-        .then(function (conn) {
-            return r.dbList()
-                .run(conn)
-                .then(function (dbs) {
-                    if (dbs.lastIndexOf(config.db.db) > -1) {
-                        return conn;
-                    }
-
-                    return r.dbCreate(config.db.db)
-                        .run(conn)
-                        .then(function () {
-                            return conn;
-                        });
-                });
-        })
-        .then(function (conn) {
-            return conn.close();
-        })
-        .then(function () {
-            return r.connect({
-                host: config.db.host,
-                port: config.db.port,
-                db: config.db.db
-            });
-        })
-        //check the session table exists
-        .then(function (conn) {
-            return r.db(config.db.db)
-                .tableList()
-                .run(conn)
-                .then(function (tables) {
-                    if (tables.lastIndexOf(config.db.sessionTable) > -1) {
-                        return conn;
-                    }
-
-                    return r.tableCreate(config.db.sessionTable)
-                        .run(conn)
-                        .then(function () {
-                            return conn;
-                        });
-                });
-        });
-};
-
-var thinky = null;
-module.exports.getThinky = function(){
-    if (!thinky){
-        thinky = require('thinky')(config.db);
+var config = require('./config');
+var thinky = require('thinky');
+var DbConfiguration = (function () {
+    function DbConfiguration() {
+        this.thinky = undefined;
     }
-    
-    return thinky;
-};
+    DbConfiguration.getInstance = function () {
+        if (!this.instance)
+            this.instance = new DbConfiguration();
+        return this.instance;
+    };
+    DbConfiguration.prototype.start = function () {
+        var r = this.getThinky().r;
+        var dbConfig = config.getInstance().db;
+        return r.dbList()
+            .run()
+            .then(function (dbs) {
+            if (dbs.lastIndexOf(dbConfig.db) == -1) {
+                return r.dbCreate(dbConfig.db)
+                    .run();
+            }
+        })
+            .then(function (conn) {
+            return r.db(dbConfig.db)
+                .tableList()
+                .run()
+                .then(function (tables) {
+                if (tables.lastIndexOf(dbConfig.sessionTable) > -1) {
+                    return conn;
+                }
+                return r.db(dbConfig.db)
+                    .tableCreate(dbConfig.sessionTable)
+                    .run();
+            });
+        });
+    };
+    DbConfiguration.prototype.getThinky = function () {
+        if (!this.thinky) {
+            this.thinky = thinky(config.getInstance().db);
+        }
+        return this.thinky;
+    };
+    DbConfiguration.instance = undefined;
+    return DbConfiguration;
+})();
+module.exports = DbConfiguration;
+//# sourceMappingURL=db.js.map

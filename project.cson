@@ -1,0 +1,14 @@
+"rean-typescript":
+  title: "rean-typescript"
+  paths: [
+    "/home/martin/dev/rean-typescript"
+  ]
+  settings:
+    ignoredNames: [
+      "*.server.service.js"
+      ".git"
+      "*.server.model.js"
+      "*.server.routes.js"
+      "*.server.controller.js"
+      "*.js.map"
+    ]

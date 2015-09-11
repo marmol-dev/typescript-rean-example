@@ -8,7 +8,8 @@ module.exports = function(grunt) {
 		clientViews: ['public/modules/**/views/**/*.html'],
 		clientJS: ['public/js/*.js', 'public/modules/**/*.js'],
 		clientCSS: ['public/modules/**/*.css'],
-		mochaTests: ['app/tests/**/*.js']
+		mochaTests: ['app/tests/**/*.js'],
+		ts : ['app/**/*.ts', 'config/**/*.ts']
 	};
 
 	// Project Configuration
@@ -51,7 +52,7 @@ module.exports = function(grunt) {
 		},
 		jshint: {
 			all: {
-				src: watchFiles.clientJS.concat(watchFiles.serverJS),
+				src: watchFiles.clientJS/*.concat(watchFiles.serverJS)*/,
 				options: {
 					jshintrc: true
 				}
@@ -113,7 +114,7 @@ module.exports = function(grunt) {
 			}
 		},
 		concurrent: {
-			default: ['nodemon', 'watch'],
+			default: ['nodemon', 'watch', 'typescript:base'],
 			debug: ['nodemon', 'watch', 'node-inspector'],
 			options: {
 				logConcurrentOutput: true,
@@ -138,6 +139,27 @@ module.exports = function(grunt) {
 		karma: {
 			unit: {
 				configFile: 'karma.conf.js'
+			}
+		},
+		typescript : {
+			options : {
+				module : 'commonjs',
+				target : 'ES5',
+				sourceMap : true,
+				generateTsConfig: true,
+				keepDirectoryHierarchy : true,
+				references : [
+					'tslibs/tslibs.d.ts',
+					'typings/tsd.d.ts'
+				]
+			},
+			base : {
+				src: watchFiles.ts,
+				dest: './',
+				options : {
+					watch: watchFiles.ts,
+					basePath : './'
+				}
 			}
 		}
 	});

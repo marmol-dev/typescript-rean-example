@@ -6,7 +6,7 @@
 var passport = require('passport'),
     User = require('../app/models/user.server.model'),
     path = require('path'),
-    config = require('./config');
+    config = require('./config').getInstance();
 
 /**
  * Module init function.

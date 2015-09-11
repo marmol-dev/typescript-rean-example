@@ -20,7 +20,7 @@ var fs = require('fs'),
     }),
     RDBStore = require('express-session-rethinkdb')(session),
     flash = require('connect-flash'),
-    config = require('./config'),
+    config = require('./config').getInstance(),
     consolidate = require('consolidate'),
     path = require('path'),
     chalk = require('chalk');

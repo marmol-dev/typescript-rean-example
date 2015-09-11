@@ -7,7 +7,7 @@ var _ = require('lodash'),
     errorHandler = require('../errors.server.controller.js'),
     passport = require('passport'),
     User = require('../../models/user.server.model'),
-    r = require('../../../config/db').getThinky().r;
+    r = require('../../../config/db').getInstance().getThinky().r;
 
 /**
  * Update user details

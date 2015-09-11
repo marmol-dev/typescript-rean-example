@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 var crypto = require('crypto'),
-    config = require('../../config/config'),
-    thinky = require('../../config/db').getThinky(),
+    config = require('../../config/config').getInstance(),
+    thinky = require('../../config/db').getInstance().getThinky(),
     r = thinky.r,
     type = thinky.type;
 

@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 var init = require('./config/init')(),
-	config = require('./config/config'),
+	config = require('./config/config').getInstance(),
 	chalk = require('chalk');
 
 /**
@@ -12,9 +12,9 @@ var init = require('./config/init')(),
  */
 
 // Bootstrap db connection
-var db = require('./config/db').start();
-
-db.then(function () {
+var db = require('./config/db').getInstance()
+	.start()
+	.then(function () {
         console.log(chalk.black('RethinkDB running on port ' + config.db.port));
         // Init the express application
         var app = require('./config/express')(db);

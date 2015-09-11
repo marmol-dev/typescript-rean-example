@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "target": "ES5",
+        "module": "commonjs",
+        "noEmitOnError": true
+    },
+    "files": [
+        "tslibs/tslibs.d.ts",
+        "typings/tsd.d.ts",
+        "config/config.ts",
+        "config/db.ts",
+        "config/env/base.ts",
+        "config/env/development.ts",
+        "config/env/enviroment.ts",
+        "config/env/production.ts",
+        "config/env/secure.ts",
+        "config/env/test.ts"
+    ]
+}

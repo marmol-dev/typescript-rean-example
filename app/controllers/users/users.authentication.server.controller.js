@@ -7,7 +7,7 @@ var _ = require('lodash'),
     errorHandler = require('../errors.server.controller'),
     passport = require('passport'),
     User = require('../../models/user.server.model'),
-    r = require('../../../config/db').getThinky().r;
+    r = require('../../../config/db').getInstance().getThinky().r;
 
 
 //check security
@@ -42,7 +42,7 @@ exports.signup = function (req, res) {
     // Add missing user fields
     user.provider = 'local';
     user.displayName = user.firstName + ' ' + user.lastName;
-    
+
     var sameCredentialsError = new Error('There is another user with the same email or username');
 
     // Then save the user
@@ -53,9 +53,9 @@ exports.signup = function (req, res) {
         }, function(err){
             return User.getByEmail(req.body.email).run()
                 .then(function(){
-                   throw sameCredentialsError; 
+                   throw sameCredentialsError;
                 }, function(err){
-                   return; 
+                   return;
                 });
         })
         .then(function () {
