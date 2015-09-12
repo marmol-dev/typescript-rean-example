@@ -26,12 +26,10 @@ var DbConfiguration = (function () {
                 .tableList()
                 .run()
                 .then(function (tables) {
-                if (tables.lastIndexOf(dbConfig.sessionTable) > -1) {
-                    return conn;
-                }
-                return r.db(dbConfig.db)
-                    .tableCreate(dbConfig.sessionTable)
-                    .run();
+                if (tables.lastIndexOf(dbConfig.sessionTable) == -1)
+                    return r.db(dbConfig.db)
+                        .tableCreate(dbConfig.sessionTable)
+                        .run();
             });
         });
     };

@@ -8,6 +8,7 @@
     "files": [
         "tslibs/tslibs.d.ts",
         "typings/tsd.d.ts",
+        "app/models/user.server.model.ts",
         "config/config.ts",
         "config/db.ts",
         "config/env/base.ts",

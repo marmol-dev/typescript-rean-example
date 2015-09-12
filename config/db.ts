@@ -29,13 +29,10 @@ class DbConfiguration {
                         .tableList()
                         .run()
                         .then(function (tables) {
-                            if (tables.lastIndexOf(dbConfig.sessionTable) > -1) {
-                                return conn;
-                            }
-
-                            return r.db(dbConfig.db)
-                                .tableCreate(dbConfig.sessionTable)
-                                .run();
+                            if (tables.lastIndexOf(dbConfig.sessionTable) == -1)
+                                return r.db(dbConfig.db)
+                                    .tableCreate(dbConfig.sessionTable)
+                                    .run();
                         });
                 });
     }
@@ -46,7 +43,6 @@ class DbConfiguration {
         if (!this.thinky){
             this.thinky = thinky(config.getInstance().db);
         }
-
         return this.thinky;
     }
 }
