@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var _ = require('lodash'),
-    errorHandler = require('../errors.server.controller.js'),
+    errorHandler = require('../errors.server.controller.js').getInstance(),
     passport = require('passport'),
     User = require('../../models/user.server.model'),
     r = require('../../../config/db').getInstance().getThinky().r;
