@@ -1,14 +1,15 @@
 'use strict';
 var crypto = require('crypto');
 var dbConfig = require('../../config/db');
-var _a = dbConfig.getInstance().getThinky(), r = _a.r, type = _a.type, createModel = _a.createModel;
+var thinky = dbConfig.getInstance().getThinky();
+var r = thinky.r, type = thinky.type;
 function validateLocalStrategyProperty(property) {
     return ((this.provider !== 'local' && !this.updated) || property.length);
 }
 function validateLocalStrategyPassword(password) {
     return (this.provider !== 'local' || (password && password.length > 6));
 }
-var User = createModel('users', {
+var User = thinky.createModel('users', {
     id: type.string(),
     firstName: type.string().validator(validateLocalStrategyProperty).default(''),
     lastName: type.string().validator(validateLocalStrategyProperty).default(''),
@@ -48,7 +49,8 @@ User.define('hashPassword', function (password) {
     }
 });
 User.define('authenticate', function (password) {
-    return this.password === this.hashPassword(password);
+    var self = this;
+    return self.password === self.hashPassword(password);
 });
 User.defineStatic('findUniqueUsername', function (username, suffix, callback) {
     var _this = this;

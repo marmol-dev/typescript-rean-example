@@ -6,8 +6,9 @@
  import * as crypto from 'crypto';
  import config = require('../../config/config');
  import dbConfig = require('../../config/db');
- var {r, type, createModel} = dbConfig.getInstance().getThinky();
- import * as thinky from 'thinky';
+ var thinky = dbConfig.getInstance().getThinky();
+ var {r, type} = thinky;
+ import * as Thinky from 'thinky';
  import * as bluebird from 'bluebird';
 
 /**
@@ -43,18 +44,18 @@ interface UserAttributes {
     resetPasswordExpires : Date;
 }
 
-interface UserDocument extends UserAttributes, thinky.Document<UserDocument, UserModel, UserAttributes> {
+interface UserDocument extends UserAttributes, Thinky.Document<UserDocument, UserModel, UserAttributes> {
     hashPassword(password : string) : string;
     authenticate(password : string) : boolean;
 }
 
-interface UserModel extends thinky.Model<UserDocument, UserModel, UserAttributes> {
+interface UserModel extends Thinky.Model<UserDocument, UserModel, UserAttributes> {
     findUniqueUsername(username : string, suffix? : number, callback? : (possibleUsername : string) => void) : bluebird.Thenable<string>;
-    getByUsername(username : string) : thinky.Expression<UserDocument>;
-    getByEmail(email : string) : thinky.Expression<UserDocument>;
+    getByUsername(username : string) : Thinky.Expression<UserDocument>;
+    getByEmail(email : string) : Thinky.Expression<UserDocument>;
 }
 
-var User = createModel<UserDocument, UserModel, UserAttributes>('users', {
+var User = thinky.createModel<UserDocument, UserModel, UserAttributes>('users', {
     id: type.string(), //do not put here .required()
     firstName: type.string().validator<any>(validateLocalStrategyProperty).default(''),//TODO: improve
     lastName: type.string().validator<any>(validateLocalStrategyProperty).default(''),
@@ -110,7 +111,8 @@ User.define('hashPassword', function (password : string) : string {
  * Create instance method for authenticating user
  */
 User.define('authenticate', function (password : string) : boolean {
-    return this.password === this.hashPassword(password);
+    var self : UserDocument = this;
+    return self.password === self.hashPassword(password);
 });
 
 /**
@@ -133,14 +135,14 @@ User.defineStatic('findUniqueUsername', function (username : string, suffix? : n
         );
 });
 
-User.defineStatic('getByUsername', function (username) : thinky.Expression<UserDocument> {
+User.defineStatic('getByUsername', function (username) : Thinky.Expression<UserDocument> {
     var self : UserModel = this;
     return self.getAll(username, {index : 'username'})
         .limit(1)
         .nth(0);
 });
 
-User.defineStatic('getByEmail', function(email) : thinky.Expression<UserDocument> {
+User.defineStatic('getByEmail', function(email) : Thinky.Expression<UserDocument> {
     var self : UserModel = this;
     return self.getAll(email, {index : 'email'})
         .limit(1)

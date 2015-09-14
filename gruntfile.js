@@ -12,6 +12,8 @@ module.exports = function(grunt) {
 		ts : ['app/**/*.ts', 'config/**/*.ts']
 	};
 
+	var compileTs = false;
+
 	// Project Configuration
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -155,7 +157,7 @@ module.exports = function(grunt) {
 			},
 			base : {
 				src: watchFiles.ts,
-				dest: './',
+				dest: compileTs ? './' : '/dev/null',
 				options : {
 					watch: watchFiles.ts,
 					basePath : './'
