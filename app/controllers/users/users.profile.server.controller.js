@@ -1,78 +1,70 @@
 'use strict';
-
-/**
- * Module dependencies.
- */
-var _ = require('lodash'),
-    errorHandler = require('../errors.server.controller.js').getInstance(),
-    passport = require('passport'),
-    User = require('../../models/user.server.model'),
-    r = require('../../../config/db').getInstance().getThinky().r;
-
-/**
- * Update user details
- */
-exports.update = function (req, res) {
-    // Init Variables
-    var user = req.user; //comprobar si puede modificaar el id
-    var message = null;
-
-
-    if (user) {
-        // Merge existing user
-        user = _.extend(user, req.body);
-        user.updated = Date.now();
-        user.displayName = user.firstName + ' ' + user.lastName;
-
-
-        User.filter(
-                r.row('username').eq(user.username).or(
-                    r.row('email').eq(user.email))
-            )
-            .limit(2)
-            .run()
-            .then(function (users) {
+var _ = require('lodash');
+var errors_server_controller_1 = require('../errors.server.controller');
+var errorHandler = errors_server_controller_1.default.getInstance();
+var user_server_model_1 = require('../../models/user.server.model');
+var db_1 = require('../../../config/db');
+var r = db_1.default.getInstance().getThinky().r;
+var UsersProfileController = (function () {
+    function UsersProfileController() {
+    }
+    UsersProfileController.prototype.update = function (req, res) {
+        var user = req.user;
+        var body = req.user;
+        var message = null;
+        if (user) {
+            user = _.extend(user, body);
+            user.updated = new Date();
+            user.displayName = user.firstName + ' ' + user.lastName;
+            user_server_model_1.default.filter(r.row('username').eq(user.username).or(r.row('email').eq(user.email)))
+                .limit(2)
+                .run()
+                .then(function (users) {
                 if (users.length === 0) {
                     return;
-                } else {
+                }
+                else {
                     var distinctId = _.any(users, function (userItr) {
                         return user.id !== userItr.id;
                     });
-
                     if (distinctId) {
                         throw new Error('There is another user with the same email or username');
-                    } else {
+                    }
+                    else {
                         return;
                     }
                 }
             })
-            .then(function () {
+                .then(function () {
                 return user.save();
             })
-            .then(function () {
+                .then(function () {
                 req.login(user, function (err) {
                     if (err) {
                         res.status(400).send(err);
-                    } else {
+                    }
+                    else {
                         res.json(user);
                     }
                 });
             })
-            .catch(function (err) {
+                .then(null, function (err) {
                 return res.status(400).send({
                     message: errorHandler.getErrorMessage(err)
                 });
             });
-    } else {
-        res.status(400).send({
-            message: 'User is not signed in'
-        });
-    }
-};
-
-/**
- * Send User
- */
-exports.me = function (req, res) {
-    res.json(req.user || null);
-};
+        }
+        else {
+            res.status(400).send({
+                message: 'User is not signed in'
+            });
+        }
+    };
+    UsersProfileController.prototype.me = function (req, res) {
+        res.json(req.user || null);
+    };
+    return UsersProfileController;
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = UsersProfileController;
+//# sourceMappingURL=users.profile.server.controller.js.map

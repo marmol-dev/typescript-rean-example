@@ -2,7 +2,6 @@
 var DevelopmentConfiguration = (function () {
     function DevelopmentConfiguration() {
     }
-    //singleton
     DevelopmentConfiguration.getInstance = function () {
         if (!this.instance)
             this.instance = new DevelopmentConfiguration();
@@ -57,5 +56,6 @@ var DevelopmentConfiguration = (function () {
     DevelopmentConfiguration.instance = undefined;
     return DevelopmentConfiguration;
 })();
-module.exports = DevelopmentConfiguration;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = DevelopmentConfiguration;
 //# sourceMappingURL=development.js.map

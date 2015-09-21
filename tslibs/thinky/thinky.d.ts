@@ -26,18 +26,18 @@ declare module "thinky" {
             validate(): Error;
             validate(): bluebird.Thenable<any>;
             validateAll(options?: ValidateAllOptions, modelToValidate?: Model<any, any, any>): bluebird.Thenable<any>;
-            save(callback: (doc: UDocument) => void): bluebird.Thenable<UDocument>;
-            saveAll(modelToSave: Model<any, any, any>, callback: (doc: UDocument) => void): bluebird.Thenable<UDocument>;
-            saveAll(modelToSave: { (fieldName: string): boolean }, callback: (doc: UDocument) => void): bluebird.Thenable<UDocument>;
+            save(callback?: (err : Error, doc: UDocument) => void): bluebird.Thenable<UDocument>;
+            saveAll(modelToSave: Model<any, any, any>, callback?: (err : Error, doc: UDocument) => void): bluebird.Thenable<UDocument>;
+            saveAll(modelToSave: { (fieldName: string): boolean }, callback?: (err : Error, doc: UDocument) => void): bluebird.Thenable<UDocument>;
             isSaved(): boolean;
             getOldValue(): UDocument;
             setSaved(): void;
-            delete(callback: (doc: UDocument) => void): bluebird.Thenable<UDocument>;
-            deleteAll(modelToDelete: Model<any, any, any>, callback: (doc: UDocument) => void): bluebird.Thenable<UDocument>;
-            deleteAll(modelToDelete: { (fieldName: string): boolean }, callback: (doc: UDocument) => void): bluebird.Thenable<UDocument>;
+            delete(callback?: (err : Error, doc: UDocument) => void): bluebird.Thenable<UDocument>;
+            deleteAll(modelToDelete: Model<any, any, any>, callback?: (err : Error, doc: UDocument) => void): bluebird.Thenable<UDocument>;
+            deleteAll(modelToDelete: { (fieldName: string): boolean }, callback?: (err : Error, doc: UDocument) => void): bluebird.Thenable<UDocument>;
             addRelation<OtherUDocument extends Document<any, any, any>, ResultDocument extends Document<any, any, any>>(field: string, joinedDocument: OtherUDocument): bluebird.Thenable<ResultDocument>;//TODO: improve
             removeRelation<OtherUDocument extends Document<any, any, any>>(field: string, joinedDocument?: OtherUDocument): bluebird.Thenable<UDocument>;
-            purge(callback: (doc: UDocument) => void) : bluebird.Thenable<UDocument>;
+            purge(callback?: (err : Error, doc: UDocument) => void) : bluebird.Thenable<UDocument>;
             //getFeed() : Feed; TODO: create
             //closeFeed() : Feed; TODO: create
             //TODO: implement getJoin
@@ -165,7 +165,6 @@ declare module "thinky" {
             skip(n: number): ItemSequence<UDocument>;
             limit(n: number): ItemSequence<UDocument>;
             slice(start: number, end?: number): ItemSequence<UDocument>;
-            nth(n: number): Expression<any>;
             indexesOf(obj: any): ItemSequence<UDocument>;
             isEmpty(): Expression<boolean>;
             union(sequence: ItemSequence<UDocument>): ItemSequence<UDocument>;
@@ -181,7 +180,9 @@ declare module "thinky" {
 
             // Manipulation
             pluck(...props: string[]): ItemSequence<any>;
+            pluck(props: string[]): ItemSequence<any>;
             without(...props: string[]): ItemSequence<any>;
+            without(props: string[]): ItemSequence<any>;
 
             pluck<T>(...props: string[]): ItemSequence<T>;
             without<T>(...props: string[]): ItemSequence<T>;
@@ -215,7 +216,7 @@ declare module "thinky" {
             skip(n: number): Sequence<UDocument>;
             limit(n: number): Sequence<UDocument>;
             slice(start: number, end?: number): Sequence<UDocument>;
-            nth(n: number): Expression<any>;
+            nth(n: number): ItemSequence<UDocument>;
             indexesOf(obj: any): Sequence<UDocument>;
             isEmpty(): Expression<boolean>;
             union(sequence: Sequence<UDocument>): Sequence<UDocument>;
@@ -233,8 +234,13 @@ declare module "thinky" {
             pluck(...props: string[]): Sequence<any>;
             without(...props: string[]): Sequence<any>;
 
+            pluck(props: string[]): Sequence<any>;
+            without(props: string[]): Sequence<any>;
+
             pluck<T>(...props: string[]): Sequence<T>;
             without<T>(...props: string[]): Sequence<T>;
+            pluck<T>(props: string[]): Sequence<T>;
+            without<T>(props: string[]): Sequence<T>;
         }
 
         export interface ExpressionFunction<U> {
@@ -297,10 +303,19 @@ declare module "thinky" {
             append(prop: string): Expression<Object>;
             contains(prop: string): Expression<boolean>;
 
+            //WARNING: is this correct?
             and(b: boolean): Expression<boolean>;
+            and(b : Expression<boolean>) : Expression<boolean>;
+
             or(b: boolean): Expression<boolean>;
+            or(b : Expression<boolean>) : Expression<boolean>;
+
             eq(v: any): Expression<boolean>;
+            eq(b : Expression<boolean>) : Expression<boolean>;
+
             ne(v: any): Expression<boolean>;
+            ne(b : Expression<boolean>) : Expression<boolean>;
+
             not(): Expression<boolean>;
 
             gt(value: T): Expression<boolean>;

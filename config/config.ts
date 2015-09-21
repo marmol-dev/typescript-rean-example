@@ -18,13 +18,15 @@ class GlobalConfiguration extends BaseConfiguration {
 		super();
 		//apply specific enviroment configuration
 		let currentEnv : string = process.env.NODE_ENV || 'development';
-		let EnvConfiguration : Enviroment = (require('./env/' + currentEnv) || require('./env/development')).getInstance();
+		let EnvConfiguration : Enviroment = (require('./env/' + currentEnv) || require('./env/development')).default.getInstance();
 		EnvConfiguration.applyConfiguration(this);
 	}
 
-	getGlobbedFiles(globPatterns : string | string[], removeRoot : string) : string[] {
+	getGlobbedFiles(globPatterns : string | string[], removeRoot? : string) : string[] {
 		// For context switching
 		var _this = this;
+
+		removeRoot = removeRoot || '';
 
 		// URL paths regex
 		var urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
@@ -77,4 +79,4 @@ class GlobalConfiguration extends BaseConfiguration {
 	}
 }
 
-export = GlobalConfiguration;
+export default GlobalConfiguration;

@@ -15,12 +15,9 @@ var fs = require('fs'),
     cookieParser = require('cookie-parser'),
     helmet = require('helmet'),
     passport = require('passport'),
-    mongoStore = require('connect-mongo')({
-        session: session
-    }),
     RDBStore = require('express-session-rethinkdb')(session),
     flash = require('connect-flash'),
-    config = require('./config').getInstance(),
+    config = require('./config').default.getInstance(),
     consolidate = require('consolidate'),
     path = require('path'),
     chalk = require('chalk');
@@ -123,7 +120,7 @@ module.exports = function (db) {
 
     // Globbing routing files
     config.getGlobbedFiles('./app/routes/**/*.js').forEach(function (routePath) {
-        require(path.resolve(routePath))(app);
+        require(path.resolve(routePath)).default(app);
     });
 
     // Assume 'not found' in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you like, set properties, use instanceof etc.

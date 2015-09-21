@@ -1,37 +1,30 @@
 'use strict';
-
-/**
- * Module dependencies.
- */
-var passport = require('passport'),
-    User = require('../app/models/user.server.model'),
-    path = require('path'),
-    config = require('./config').getInstance();
-
-/**
- * Module init function.
- */
-module.exports = function () {
-    // Serialize sessions
+var passport = require('passport');
+var user_server_model_1 = require('../app/models/user.server.model');
+var path = require('path');
+var config_1 = require('./config');
+var config = config_1.default.getInstance();
+function default_1() {
     passport.serializeUser(function (user, done) {
         done(null, user.id);
     });
-
-    // Deserialize sessions
     passport.deserializeUser(function (id, done) {
-        User.get(id)
+        user_server_model_1.default.get(id)
             .without(['salt', 'password'])
             .run()
             .then(function (user) {
-                done(null, user);
-            })
-            .error(function (err) {
-                done(err);
-            });
+            done(null, user);
+        })
+            .then(null, function (err) {
+            done(err, null);
+        });
     });
-
-    // Initialize strategies
-    config.getGlobbedFiles('./config/strategies/**/*.js').forEach(function (strategy) {
-        require(path.resolve(strategy))();
+    config.getGlobbedFiles('./config/strategies/**/*.js').forEach(function (strategyPath) {
+        var strategy = require(path.resolve(strategyPath)).default;
+        strategy();
     });
-};
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = default_1;
+;
+//# sourceMappingURL=passport.js.map

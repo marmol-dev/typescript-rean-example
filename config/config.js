@@ -2,8 +2,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var base_1 = require('./env/base');
 var glob = require('glob');
@@ -12,9 +11,8 @@ var GlobalConfiguration = (function (_super) {
     __extends(GlobalConfiguration, _super);
     function GlobalConfiguration() {
         _super.call(this);
-        //apply specific enviroment configuration
         var currentEnv = process.env.NODE_ENV || 'development';
-        var EnvConfiguration = (require('./env/' + currentEnv) || require('./env/development')).getInstance();
+        var EnvConfiguration = (require('./env/' + currentEnv) || require('./env/development')).default.getInstance();
         EnvConfiguration.applyConfiguration(this);
     }
     GlobalConfiguration.getInstance = function () {
@@ -23,13 +21,10 @@ var GlobalConfiguration = (function (_super) {
         return this._instance;
     };
     GlobalConfiguration.prototype.getGlobbedFiles = function (globPatterns, removeRoot) {
-        // For context switching
         var _this = this;
-        // URL paths regex
+        removeRoot = removeRoot || '';
         var urlRegex = new RegExp('^(?:[a-z]+:)?\/\/', 'i');
-        // The output array
         var output = [];
-        // If glob pattern is array so we use each pattern in a recursive way, otherwise we use glob
         if (globPatterns instanceof Array) {
             globPatterns.forEach(function (globPattern) {
                 output = _.union(output, _this.getGlobbedFiles(globPattern, removeRoot));
@@ -58,7 +53,6 @@ var GlobalConfiguration = (function (_super) {
         if (typeof includeTests === 'undefined')
             includeTests = false;
         var output = this.getGlobbedFiles(this.assets.lib.js.concat(this.assets.js), 'public/');
-        // To include tests
         if (includeTests) {
             output = _.union(output, this.getGlobbedFiles(this.assets.tests, 'public/'));
         }
@@ -68,9 +62,9 @@ var GlobalConfiguration = (function (_super) {
         var output = this.getGlobbedFiles(this.assets.lib.css.concat(this.assets.css), 'public/');
         return output;
     };
-    //singleton
     GlobalConfiguration._instance = undefined;
     return GlobalConfiguration;
 })(base_1.default);
-module.exports = GlobalConfiguration;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = GlobalConfiguration;
 //# sourceMappingURL=config.js.map

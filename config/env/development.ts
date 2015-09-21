@@ -60,4 +60,4 @@ class DevelopmentConfiguration implements EnviromentConfiguration {
     }
 }
 
-export = DevelopmentConfiguration;
+export default DevelopmentConfiguration;

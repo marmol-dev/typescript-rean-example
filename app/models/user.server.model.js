@@ -1,7 +1,7 @@
 'use strict';
 var crypto = require('crypto');
-var dbConfig = require('../../config/db');
-var thinky = dbConfig.getInstance().getThinky();
+var db_1 = require('../../config/db');
+var thinky = db_1.default.getInstance().getThinky();
 var r = thinky.r, type = thinky.type;
 function validateLocalStrategyProperty(property) {
     return ((this.provider !== 'local' && !this.updated) || property.length);
@@ -76,5 +76,6 @@ User.defineStatic('getByEmail', function (email) {
         .limit(1)
         .nth(0);
 });
-module.exports = User;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = User;
 //# sourceMappingURL=user.server.model.js.map

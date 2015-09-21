@@ -4,9 +4,9 @@
  * Module dependencies.
  */
  import * as crypto from 'crypto';
- import config = require('../../config/config');
- import dbConfig = require('../../config/db');
- var thinky = dbConfig.getInstance().getThinky();
+ import config from '../../config/config';
+ import DbConfig from '../../config/db';
+ var thinky = DbConfig.getInstance().getThinky();
  var {r, type} = thinky;
  import * as Thinky from 'thinky';
  import * as bluebird from 'bluebird';
@@ -25,34 +25,34 @@ function validateLocalStrategyPassword(password : string) {
     return (this.provider !== 'local' || (password && password.length > 6));
 }
 
-interface UserAttributes {
-    id : string;
+export interface UserAttributes {
+    id? : string;
     firstName? : string;
     lastName?: string;
-    displayName : string;
-    email : string;
-    username : string;
-    password : string;
-    salt : string;
-    provider : string;
-    providerData : any;
-    additionalProvidersData : any;
+    displayName? : string;
+    email? : string;
+    username? : string;
+    password? : string;
+    salt? : string;
+    provider? : string;
+    providerData? : any;
+    additionalProvidersData? : any;
     roles?: string[];
     updated? : Date;
     created?: Date;
-    resetPasswordToken : string;
-    resetPasswordExpires : Date;
+    resetPasswordToken? : string;
+    resetPasswordExpires? : Date;
 }
 
-interface UserDocument extends UserAttributes, Thinky.Document<UserDocument, UserModel, UserAttributes> {
+export interface UserDocument extends UserAttributes, Thinky.Document<UserDocument, UserModel, UserAttributes> {
     hashPassword(password : string) : string;
     authenticate(password : string) : boolean;
 }
 
-interface UserModel extends Thinky.Model<UserDocument, UserModel, UserAttributes> {
+export interface UserModel extends Thinky.Model<UserDocument, UserModel, UserAttributes> {
     findUniqueUsername(username : string, suffix? : number, callback? : (possibleUsername : string) => void) : bluebird.Thenable<string>;
-    getByUsername(username : string) : Thinky.Expression<UserDocument>;
-    getByEmail(email : string) : Thinky.Expression<UserDocument>;
+    getByUsername(username : string) : Thinky.ItemSequence<UserDocument>;
+    getByEmail(email : string) : Thinky.ItemSequence<UserDocument>;
 }
 
 var User = thinky.createModel<UserDocument, UserModel, UserAttributes>('users', {
@@ -135,18 +135,18 @@ User.defineStatic('findUniqueUsername', function (username : string, suffix? : n
         );
 });
 
-User.defineStatic('getByUsername', function (username) : Thinky.Expression<UserDocument> {
+User.defineStatic('getByUsername', function (username) {
     var self : UserModel = this;
     return self.getAll(username, {index : 'username'})
         .limit(1)
         .nth(0);
 });
 
-User.defineStatic('getByEmail', function(email) : Thinky.Expression<UserDocument> {
+User.defineStatic('getByEmail', function(email) {
     var self : UserModel = this;
     return self.getAll(email, {index : 'email'})
         .limit(1)
         .nth(0);
 });
 
-export = User;
+export default User;

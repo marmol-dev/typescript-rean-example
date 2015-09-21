@@ -22,7 +22,7 @@ class ErrorsController {
 		return output;
 	}
 
-	private getErrorMessage(err : any) : string {
+	getErrorMessage(err : any) : string {
 		var message = '';
 
 		if (err.code) {
@@ -39,11 +39,13 @@ class ErrorsController {
 				if (err.errors[errName].message) message = err.errors[errName].message;
 			}
 		} else if (err.message) {
-	        return err.message;
+	        message = err.message;
 	    }
+
+		console.log(err, '--->', message);
 
 		return message;
 	}
 }
 
-export = ErrorsController;
+export default ErrorsController;

@@ -37,12 +37,14 @@ var ErrorsController = (function () {
             }
         }
         else if (err.message) {
-            return err.message;
+            message = err.message;
         }
+        console.log(err, '--->', message);
         return message;
     };
     ErrorsController.instance = undefined;
     return ErrorsController;
 })();
-module.exports = ErrorsController;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = ErrorsController;
 //# sourceMappingURL=errors.server.controller.js.map

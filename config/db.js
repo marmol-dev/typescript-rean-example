@@ -1,5 +1,5 @@
 'use strict';
-var config = require('./config');
+var config_1 = require('./config');
 var thinky = require('thinky');
 var DbConfiguration = (function () {
     function DbConfiguration() {
@@ -12,7 +12,7 @@ var DbConfiguration = (function () {
     };
     DbConfiguration.prototype.start = function () {
         var r = this.getThinky().r;
-        var dbConfig = config.getInstance().db;
+        var dbConfig = config_1.default.getInstance().db;
         return r.dbList()
             .run()
             .then(function (dbs) {
@@ -35,12 +35,13 @@ var DbConfiguration = (function () {
     };
     DbConfiguration.prototype.getThinky = function () {
         if (!this.thinky) {
-            this.thinky = thinky(config.getInstance().db);
+            this.thinky = thinky(config_1.default.getInstance().db);
         }
         return this.thinky;
     };
     DbConfiguration.instance = undefined;
     return DbConfiguration;
 })();
-module.exports = DbConfiguration;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = DbConfiguration;
 //# sourceMappingURL=db.js.map

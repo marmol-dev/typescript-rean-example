@@ -1,6 +1,6 @@
 'use strict';
 
-import config = require('./config');
+import config from './config';
 import * as bluebird from 'bluebird';
 import * as thinky from 'thinky';
 
@@ -47,4 +47,4 @@ class DbConfiguration {
     }
 }
 
-export = DbConfiguration;
+export default DbConfiguration;

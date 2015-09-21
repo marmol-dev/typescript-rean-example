@@ -1,7 +1,10 @@
 'use strict';
-
-module.exports = function(app) {
-	// Root routing
-	var core = require('../../app/controllers/core.server.controller');
-	app.route('/').get(core.index);
-};
+var core_server_controller_1 = require('../controllers/core.server.controller');
+function default_1(app) {
+    var core = core_server_controller_1.default.getInstance();
+    app.route('/').get(core.index);
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = default_1;
+;
+//# sourceMappingURL=core.server.routes.js.map
