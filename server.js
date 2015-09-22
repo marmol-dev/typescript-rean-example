@@ -1,34 +1,24 @@
 'use strict';
-/**
- * Module dependencies.
- */
-var init = require('./config/init')(),
-	config = require('./config/config').default.getInstance(),
-	chalk = require('chalk');
-
-/**
- * Main application entry file.
- * Please note that the order of loading is important.
- */
-
-// Bootstrap db connection
-var db = require('./config/db').default.getInstance()
-	.start()
-	.then(function () {
-        console.log(chalk.black('RethinkDB running on port ' + config.db.port));
-        // Init the express application
-        var app = require('./config/express')(db);
-
-        // Bootstrap passport config
-        require('./config/passport').default();
-
-        // Start the app by listening on <port>
-        app.listen(config.port);
-    })
-    .error(function (err) {
-        console.error(chalk.red('Could not connect to RethinkDB!'));
-        console.log(chalk.red(err));
-    });
-
-// Logging initialization
+var init_1 = require('./config/init');
+var config_1 = require('./config/config');
+var config = config_1.default.getInstance();
+var chalk = require('chalk');
+var db_1 = require('./config/db');
+var dbConfig = db_1.default.getInstance();
+var passport_1 = require('./config/passport');
+var express_1 = require('./config/express');
+init_1.default();
+var db = dbConfig
+    .start()
+    .then(function () {
+    console.log(chalk.black('RethinkDB running on port ' + config.db.port));
+    var app = express_1.default(db);
+    passport_1.default();
+    app.listen(config.port);
+})
+    .then(null, function (err) {
+    console.error(chalk.red('Could not connect to RethinkDB!'));
+    console.log(chalk.red(err));
+});
 console.log('REAN application started on port ' + config.port);
+//# sourceMappingURL=server.js.map

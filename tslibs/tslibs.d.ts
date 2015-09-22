@@ -4,3 +4,6 @@
 /// <reference path="./passport-twitter/passport-twitter.d.ts"/>
 /// <reference path="./passport-linkedin/passport-linkedin.d.ts"/>
 /// <reference path="./passport-google-oauth/passport-google-oauth.d.ts"/>
+/// <reference path="./helmet/helmet.d.ts"/>
+/// <reference path="./express-session-rethinkdb/express-session-rethinkdb.d.ts"/>
+/// <reference path="./compression/compression.d.ts"/>

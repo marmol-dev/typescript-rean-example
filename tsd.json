@@ -55,6 +55,33 @@
     },
     "passport-local/passport-local.d.ts": {
       "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "morgan/morgan.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "body-parser/body-parser.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "cookie-parser/cookie-parser.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "method-override/method-override.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "connect-flash/connect-flash.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "express-session/express-session.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "compression/compression.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "consolidate/consolidate.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
+    },
+    "chalk/chalk.d.ts": {
+      "commit": "09e37435ffb2c56a6f908081194a74756f24f99d"
     }
   }
 }

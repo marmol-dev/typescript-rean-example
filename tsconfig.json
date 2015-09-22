@@ -26,12 +26,15 @@
         "config/env/production.ts",
         "config/env/secure.ts",
         "config/env/test.ts",
+        "config/express.ts",
+        "config/init.ts",
         "config/passport.ts",
         "config/strategies/facebook.ts",
         "config/strategies/github.ts",
         "config/strategies/google.ts",
         "config/strategies/linkedin.ts",
         "config/strategies/local.ts",
-        "config/strategies/twitter.ts"
+        "config/strategies/twitter.ts",
+        "server.ts"
     ]
 }

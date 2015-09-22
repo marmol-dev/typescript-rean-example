@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 		clientJS: ['public/js/*.js', 'public/modules/**/*.js'],
 		clientCSS: ['public/modules/**/*.css'],
 		mochaTests: ['app/tests/**/*.js'],
-		ts : ['app/**/*.ts', 'config/**/*.ts']
+		ts : ['app/**/*.ts', 'config/**/*.ts', 'server.ts']
 	};
 
 	var compileTs = false;

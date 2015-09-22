@@ -133,3 +133,12 @@ Listening for administrative HTTP connections on port 8080
 Listening on addresses: 127.0.0.1, 127.0.1.1, ::1
 To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
 Server ready, "martin_desktop_704" 811a307e-7fca-4a37-b57f-d78adc882f2b
+Running rethinkdb 2.1.4~0trusty (GCC 4.8.2)...
+Running on Linux 3.16.0-49-generic x86_64
+Loading data from directory /home/martin/dev/rean-typescript/rethinkdb_data
+Listening for intracluster connections on port 29015
+Listening for client driver connections on port 28015
+Listening for administrative HTTP connections on port 8080
+Listening on addresses: 127.0.0.1, 127.0.1.1, ::1
+To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+Server ready, "martin_desktop_704" 811a307e-7fca-4a37-b57f-d78adc882f2b
